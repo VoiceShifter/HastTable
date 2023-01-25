@@ -371,12 +371,23 @@ void ReadTxtFile(std::vector<BankNum>& Nums, std::string a_FileName) {
 
 BankNum CreateItem()
 {
-	BankNum Test{};
+	BankNum *Test = new BankNum{};
 	std::cout << "Enter Fio, Adress, Number\n";
-	std::cin >> Test.Fio;
-	std::cin >> Test.Adress;
-	std::cin >> Test.Number;
-	return Test;
+	/*std::string a_Fio;
+	std::string a_Adress;
+	signed int a_Number;
+	std::cin >> a_Fio;*/
+	
+	getline(std::cin >> ws, Test->Fio);
+	
+	getline(std::cin >> ws, Test->Adress);
+	std::cin >> Test->Number;
+	return *Test;
 
 }
 ;
+
+std::ostream& operator<<(std::ostream& os, BankNum const& Object)
+{
+	return os << Object.Adress << " " << Object.Fio << " " << Object.Number;
+}

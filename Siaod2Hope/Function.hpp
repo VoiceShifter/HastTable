@@ -30,9 +30,17 @@ public:
 		Adress = "";
 		Number = 0;
 	};
-
+	void operator=(BankNum Object)
+	{
+		this->Adress = Object.Adress;
+		this->Fio = Object.Fio;
+		this->Number = Object.Number;
+	};
+	friend std::ostream& operator<<(std::ostream& os, BankNum const& Object);
+	
 
 };
+
 void ReadTxtFile(std::vector<BankNum>& Nums, std::string a_FileName);
 void CreateFile(std::string a_FileName);
 unsigned int Check(std::string a_FileName);

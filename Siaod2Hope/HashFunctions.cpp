@@ -36,12 +36,16 @@ unsigned long HashTableList::Hash_Function(BankNum Item)
 };
 
 
-bool HashTableList::Insert(BankNum& a_Item, int a_Key)			//open adress
+
+bool HashTableList::Insert(BankNum const& a_Item, int a_Key)		//open adress
 {
 	unsigned long Buffer{ Hash_Function(a_Item) };
 	if (this->Table[Buffer] = nullptr)
 	{
-		this->Table[Buffer]->Item = a_Item;
+		this->Table[Buffer] = new Node{};
+		this->Table[Buffer]->Item.Adress = a_Item.Adress;
+		this->Table[Buffer]->Item.Fio = a_Item.Fio;
+		this->Table[Buffer]->Item.Number = a_Item.Number;
 		return true;
 
 	}
@@ -55,30 +59,42 @@ bool HashTableList::Insert(BankNum& a_Item, int a_Key)			//open adress
 	return true;
 
 };
-bool HashTableList::Insert2(BankNum& a_Item, int a_Key)	      //цепочка
+
+
+
+
+bool HashTableList::Insert2(BankNum const& a_Item, int a_Key)      //цепочка
 {
 	unsigned long Buffer{ Hash_Function(a_Item) };
 
 	if (this->Table[Buffer] == nullptr)
 	{
-		this->Table[Buffer]->Item = a_Item;
+		this->Table[Buffer] = new Node{};
+		this->Table[Buffer]->Item.Adress = a_Item.Adress;
+		this->Table[Buffer]->Item.Fio = a_Item.Fio;
+		this->Table[Buffer]->Item.Number = a_Item.Number;
 		return true;
 	}
+
 
 	Node* BufferNode(this->Table[Buffer]);
 	while (BufferNode->Next != nullptr)
 	{
 		BufferNode = BufferNode->Next;
 	}
+	BufferNode->Next = new Node{};
 	BufferNode->Next->Item = a_Item;
 
 }
-void HashTableList::DeleteItem(BankNum& a_Item)
+
+
+
+void HashTableList::DeleteItem(BankNum const& a_Item)
 {
 	unsigned long Buffer{ Hash_Function(a_Item) };
 	if (this->Table[Buffer]->Item.Number == a_Item.Number)
 	{
-		this->Table[Buffer]->Deleted=true;
+		this->Table[Buffer]->Deleted = true;
 	}
 	Node* BufferNode(this->Table[Buffer]);
 	while (BufferNode->Next->Item.Number != a_Item.Number)
@@ -87,7 +103,10 @@ void HashTableList::DeleteItem(BankNum& a_Item)
 	}
 	BufferNode->Next->Deleted = true;
 };
-unsigned long HashTableList::Seach(BankNum& a_Item)
+
+
+
+unsigned long HashTableList::Seach(BankNum const& a_Item)
 {
 	unsigned long Buffer{ Hash_Function(a_Item) };
 	if (this->Table[Buffer]->Item.Number == a_Item.Number)
@@ -102,3 +121,26 @@ unsigned long HashTableList::Seach(BankNum& a_Item)
 	return Buffer;
 }
 
+
+void HashTableList::DisplayHashTable()
+{
+	for (size_t Index{}; Index < this->Buffer_Size; Index++)
+	{
+		if (this->Table[Index] == nullptr)
+		{	
+			continue;
+		}
+		std::cout << "Index - " << Index << " " << this->Table[Index]->Item << '\n';
+		if (this->Table[Index]->Next != nullptr)
+		{
+			size_t InnerCounter{ 1 };			//лучше ли один раз проверить условие, чем 2 раза создавать переменные?
+			Node* BufferNode(this->Table[Index]);
+			while (BufferNode->Next != nullptr)
+			{
+				std::cout << "Index - " << Index << " " << "Chain part - " << InnerCounter << " / " << BufferNode->Item << '\n';
+				BufferNode = BufferNode->Next;
+			}
+		}
+		
+	}
+}

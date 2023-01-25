@@ -128,24 +128,40 @@ signed int main()
 {
 	std::string FileName{};
 	signed int SwitchForCase{};
+	HashTableList HashTable{};
 Start:;
-	std::cout << "Action: \n1 - Insert\n";
+	std::cout << "Action: \n1 - Insert\n2 - See all elements\n3 - Search\n4 - Delete\n";
 	std::cin >> SwitchForCase;
+
 	switch (SwitchForCase)
 	{
 
 	case 1:
 	{
-		HashTableList HashTable{};
-		BankNum aIteam{ CreateItem() };
-		HashTable.Insert2(aIteam, 0);
+		HashTable.Insert2(CreateItem(), 0);
+		goto Start;
+	}
+	case 2:
+	{
+		HashTable.DisplayHashTable();
 		goto Start;
 	}
 
+	case 3:
+	{
+		std::cout << HashTable.Seach(CreateItem());
+		goto Start;
+	}
 
+	case 4:
+	{
+		HashTable.DeleteItem(CreateItem());
+		goto Start;
+	}
+
+	}
 	system("pause");
 	return 0;
-	}
 }
 
 
